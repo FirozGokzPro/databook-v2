@@ -1,78 +1,199 @@
-import { useState } from 'react'
+import { useState } from "react";
 import {
-  BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
-} from 'recharts'
-import ChartModal from './ChartModal.jsx'
-import './ChartsPanel.css'
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  Sankey,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import ChartModal from "./ChartModal.jsx";
+import "./ChartsPanel.css";
 
 const revenueData = [
-  { month: 'Jan', revenue: 1200, target: 1000 },
-  { month: 'Feb', revenue: 1480, target: 1200 },
-  { month: 'Mar', revenue: 1350, target: 1300 },
-  { month: 'Apr', revenue: 1800, target: 1400 },
-  { month: 'May', revenue: 1650, target: 1500 },
-  { month: 'Jun', revenue: 2100, target: 1600 },
-  { month: 'Jul', revenue: 2400, target: 1700 },
-  { month: 'Aug', revenue: 2250, target: 1800 },
-]
+  { month: "Jan", revenue: 1200, target: 1000 },
+  { month: "Feb", revenue: 1480, target: 1200 },
+  { month: "Mar", revenue: 1350, target: 1300 },
+  { month: "Apr", revenue: 1800, target: 1400 },
+  { month: "May", revenue: 1650, target: 1500 },
+  { month: "Jun", revenue: 2100, target: 1600 },
+  { month: "Jul", revenue: 2400, target: 1700 },
+  { month: "Aug", revenue: 2250, target: 1800 },
+];
 
 const categoryData = [
-  { name: 'Category A', value: 43 },
-  { name: 'Category B', value: 27 },
-  { name: 'Category C', value: 18 },
-  { name: 'Category D', value: 12 },
-]
+  { name: "Category A", value: 43 },
+  { name: "Category B", value: 27 },
+  { name: "Category C", value: 18 },
+  { name: "Category D", value: 12 },
+];
 
 const trendsData = [
-  { week: 'W1', users: 320, sessions: 890 },
-  { week: 'W2', users: 440, sessions: 1100 },
-  { week: 'W3', users: 380, sessions: 970 },
-  { week: 'W4', users: 560, sessions: 1380 },
-  { week: 'W5', users: 620, sessions: 1540 },
-  { week: 'W6', users: 780, sessions: 1920 },
-]
+  { week: "W1", users: 320, sessions: 890 },
+  { week: "W2", users: 440, sessions: 1100 },
+  { week: "W3", users: 380, sessions: 970 },
+  { week: "W4", users: 560, sessions: 1380 },
+  { week: "W5", users: 620, sessions: 1540 },
+  { week: "W6", users: 780, sessions: 1920 },
+];
 
-const PIE_COLORS = ['#8b5cf6', '#6366f1', '#3b82f6', '#06b6d4']
+const PIE_COLORS = ["#8b5cf6", "#6366f1", "#3b82f6", "#06b6d4"];
+
+const KPI_CARDS = [
+  { title: "Free cash flow YTD", value: "₹118 Cr" },
+  { title: "Cash burn rate", value: "₹48 Cr" },
+  { title: "CF drawdown", value: "₹481 Cr" },
+  {
+    title: "Collections efficiency",
+    value: "82.4%",
+    subtitle: "Receivables aging",
+  },
+  { title: "Interest rate (wtd)", value: "11.8%", subtitle: "Trial balance" },
+];
+
+const COLLECTIONS_VS_DEMAND_DATA = [
+  { month: "Jan", demandNotes: 105, collections: 90 },
+  { month: "Feb", demandNotes: 85, collections: 80 },
+  { month: "Mar", demandNotes: 78, collections: 65 },
+  { month: "Apr", demandNotes: 84, collections: 62 },
+  { month: "May", demandNotes: 90, collections: 70 },
+  { month: "Jun", demandNotes: 86, collections: 76 },
+  { month: "Jul", demandNotes: 95, collections: 68 },
+  { month: "Aug", demandNotes: 101, collections: 79 },
+  { month: "Sep", demandNotes: 98, collections: 83 },
+  { month: "Oct", demandNotes: 100, collections: 78 },
+  { month: "Nov", demandNotes: 110, collections: 92 },
+  { month: "Dec", demandNotes: 106, collections: 85 },
+];
+
+const FCF_BY_PROJECT_DATA = [
+  { project: "Amada", fcf: 82 },
+  { project: "Verdant P2", fcf: 31 },
+  { project: "Supremo", fcf: 28 },
+  { project: "Bellefonte", fcf: 90 },
+  { project: "Mirabilis", fcf: 78 },
+  { project: "Enchante", fcf: 60 },
+  { project: "Periwinkle", fcf: 50 },
+  { project: "Aurelia", fcf: 40 },
+  { project: "Celeste", fcf: 100 },
+  { project: "Florence", fcf: 90 },
+  { project: "Riviera", fcf: 80 },
+];
+
+const LEAD_CONVERSION_FUNNEL_DATA = [
+  { stage: "Total enquiries", value: 100 },
+  { stage: "Qualified leads", value: 84 },
+  { stage: "Site visits", value: 62 },
+  { stage: "Negotiation", value: 34 },
+  { stage: "Agreement signed", value: 22 },
+  { stage: "Booking + payment", value: 19.2 },
+];
+
+const CASH_FLOW_SANKEY_DATA = {
+  nodes: [
+    { name: "Verdant PH 2 · ECR" },
+    { name: "Ananda · OMR Chennai" },
+    { name: "Enchante · Coimbatore" },
+    { name: "Periwinkle · Hyderabad" },
+    { name: "Supremo · Sarjapur" },
+    { name: "Bellefonte · Perungudi" },
+    { name: "Mirabilis · Whitefield" },
+    { name: "Revenue" },
+    { name: "EBITDA" },
+    { name: "Construction Cost" },
+    { name: "SG&A Expense" },
+    { name: "Interest Cost" },
+    { name: "Profit Before Tax (PBT)" },
+    { name: "Depreciation & Amortization" },
+    { name: "Profit After Tax (PAT)" },
+    { name: "Tax" },
+  ],
+  links: [
+    { source: 0, target: 7, value: 17 },
+    { source: 1, target: 7, value: 11 },
+    { source: 2, target: 7, value: 10 },
+    { source: 3, target: 7, value: 5.8 },
+    { source: 4, target: 7, value: 5.25 },
+    { source: 5, target: 7, value: 4.4 },
+    { source: 6, target: 7, value: 3.8 },
+    { source: 7, target: 8, value: 23.8 },
+    { source: 7, target: 9, value: 21.5 },
+    { source: 7, target: 10, value: 8.2 },
+    { source: 7, target: 11, value: 3.6 },
+    { source: 8, target: 12, value: 18.5 },
+    { source: 8, target: 13, value: 1.2 },
+    { source: 12, target: 14, value: 7.9 },
+    { source: 12, target: 15, value: 4.6 },
+  ],
+};
 
 const CHARTS = [
-  { id: 'bar',  title: 'Revenue vs Target ($K)', data: revenueData },
-  { id: 'pie',  title: 'Sales by Category',       data: categoryData },
-  { id: 'line', title: 'Weekly Users & Sessions',  data: trendsData },
-]
-
-const SUGGESTIONS = [
-  { icon: '📈', summary: 'Revenue beat target 6 of 8 months. Q3 peak at $2.4M — highest in dataset.', action: 'Investigate Q3 drivers and replicate conditions in Q4 planning.', priority: 'high' },
-  { icon: '🏆', summary: 'Category A holds 43% share — 1.6× next largest category.', action: 'Expand Category A inventory before next cycle to capture demand.', priority: 'medium' },
-  { icon: '👥', summary: 'Sessions growing 2.2× faster than users (W1→W6). Engagement rising.', action: 'Identify top-session flows and convert them into onboarding steps.', priority: 'medium' },
-]
-
-const PRIORITY_COLOR = { high: '#f59e0b', medium: '#8b5cf6', low: '#22c55e' }
+  { id: "bar", title: "Revenue vs Target ($K)", data: revenueData },
+  { id: "pie", title: "Sales by Category", data: categoryData },
+  { id: "line", title: "Weekly Users & Sessions", data: trendsData },
+  {
+    id: "runway",
+    title: "Runway analysis",
+    data: {
+      collectionsVsDemand: COLLECTIONS_VS_DEMAND_DATA,
+      fcfByProject: FCF_BY_PROJECT_DATA,
+    },
+  },
+  {
+    id: "conversion",
+    title: "Lead conversion funnel - monthly",
+    data: LEAD_CONVERSION_FUNNEL_DATA,
+  },
+  {
+    id: "cashflow",
+    title: "Cash Flow",
+    data: CASH_FLOW_SANKEY_DATA,
+  },
+];
 
 const CustomTooltip = ({ active, payload, label }) => {
-  if (!active || !payload?.length) return null
+  if (!active || !payload?.length) return null;
   return (
     <div className="chart-tooltip">
       {label && <p className="tooltip-label">{label}</p>}
       {payload.map((p, i) => (
         <p key={i} style={{ color: p.color }}>
-          {p.name}: <strong>{typeof p.value === 'number' && p.value > 999 ? `$${(p.value / 1000).toFixed(1)}K` : p.value}</strong>
+          {p.name}:{" "}
+          <strong>
+            {typeof p.value === "number" && p.value > 999
+              ? `$${(p.value / 1000).toFixed(1)}K`
+              : p.value}
+          </strong>
         </p>
       ))}
     </div>
-  )
-}
+  );
+};
 
 const ExpandIcon = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path
+      d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
-)
+);
 
 export default function ChartsPanel() {
-  const [activeChart, setActiveChart] = useState(null)
+  const [activeChart, setActiveChart] = useState(null);
 
-  const openChart = (chartId) => setActiveChart(CHARTS.find(c => c.id === chartId))
+  const openChart = (chartId) =>
+    setActiveChart(CHARTS.find((c) => c.id === chartId));
 
   return (
     <>
@@ -84,60 +205,134 @@ export default function ChartsPanel() {
 
         <div className="charts-scroll">
           {/* KPI Row */}
-          <div className="kpi-row">
-            <div className="kpi-card">
-              <span className="kpi-label">Total Revenue</span>
-              <span className="kpi-value">$2.4M</span>
-              <span className="kpi-delta positive">+18% Q3</span>
-            </div>
-            <div className="kpi-card">
-              <span className="kpi-label">Avg Deal</span>
-              <span className="kpi-value">$1,580</span>
-              <span className="kpi-delta positive">+31% YoY</span>
-            </div>
+          <div
+            className="insights-kpi-grid"
+            aria-label="Casagrand KPI summary cards"
+          >
+            {KPI_CARDS.map((kpi) => (
+              <article className="insights-kpi-card" key={kpi.title}>
+                <p className="insights-kpi-title">{kpi.title}</p>
+                <p className="insights-kpi-value">{kpi.value}</p>
+                {kpi.subtitle ? (
+                  <p className="insights-kpi-subtitle">{kpi.subtitle}</p>
+                ) : (
+                  <p className="insights-kpi-subtitle spacer">&nbsp;</p>
+                )}
+              </article>
+            ))}
           </div>
 
           {/* Bar Chart */}
-          <div className="chart-card clickable" onClick={() => openChart('bar')}>
+          <div
+            className="chart-card clickable"
+            onClick={() => openChart("bar")}
+          >
             <div className="chart-title-row">
               <span className="chart-title">Revenue vs Target ($K)</span>
-              <span className="expand-hint"><ExpandIcon /></span>
+              <span className="expand-hint">
+                <ExpandIcon />
+              </span>
             </div>
             <ResponsiveContainer width="100%" height={180}>
-              <BarChart data={revenueData} barGap={2} margin={{ top: 8, right: 8, bottom: 0, left: -20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e1e2a" vertical={false} />
-                <XAxis dataKey="month" tick={{ fill: '#55556a', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#55556a', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: '#ffffff08' }} />
-                <Bar dataKey="revenue" fill="#8b5cf6" radius={[3, 3, 0, 0]} name="revenue" />
-                <Bar dataKey="target" fill="#2a2a3a" radius={[3, 3, 0, 0]} name="target" />
+              <BarChart
+                data={revenueData}
+                barGap={2}
+                margin={{ top: 8, right: 8, bottom: 0, left: -20 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="#1e1e2a"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="month"
+                  tick={{ fill: "#55556a", fontSize: 11 }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{ fill: "#55556a", fontSize: 11 }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{ fill: "#ffffff08" }}
+                />
+                <Bar
+                  dataKey="revenue"
+                  fill="#8b5cf6"
+                  radius={[3, 3, 0, 0]}
+                  name="revenue"
+                />
+                <Bar
+                  dataKey="target"
+                  fill="#2a2a3a"
+                  radius={[3, 3, 0, 0]}
+                  name="target"
+                />
               </BarChart>
             </ResponsiveContainer>
             <div className="chart-legend">
-              <span><span className="dot" style={{ background: '#8b5cf6' }} />Revenue</span>
-              <span><span className="dot" style={{ background: '#2a2a3a', border: '1px solid #44445a' }} />Target</span>
+              <span>
+                <span className="dot" style={{ background: "#8b5cf6" }} />
+                Revenue
+              </span>
+              <span>
+                <span
+                  className="dot"
+                  style={{ background: "#2a2a3a", border: "1px solid #44445a" }}
+                />
+                Target
+              </span>
             </div>
           </div>
 
           {/* Pie Chart */}
-          <div className="chart-card clickable" onClick={() => openChart('pie')}>
+          <div
+            className="chart-card clickable"
+            onClick={() => openChart("pie")}
+          >
             <div className="chart-title-row">
               <span className="chart-title">Sales by Category</span>
-              <span className="expand-hint"><ExpandIcon /></span>
+              <span className="expand-hint">
+                <ExpandIcon />
+              </span>
             </div>
             <div className="pie-wrapper">
               <ResponsiveContainer width="50%" height={160}>
                 <PieChart>
-                  <Pie data={categoryData} cx="50%" cy="50%" innerRadius={45} outerRadius={72} paddingAngle={3} dataKey="value">
-                    {categoryData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i]} />)}
+                  <Pie
+                    data={categoryData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={45}
+                    outerRadius={72}
+                    paddingAngle={3}
+                    dataKey="value"
+                  >
+                    {categoryData.map((_, i) => (
+                      <Cell key={i} fill={PIE_COLORS[i]} />
+                    ))}
                   </Pie>
-                  <Tooltip formatter={(v) => `${v}%`} contentStyle={{ background: '#1a1a24', border: '1px solid #2e2e3e', borderRadius: 8, fontSize: 12 }} />
+                  <Tooltip
+                    formatter={(v) => `${v}%`}
+                    contentStyle={{
+                      background: "#1a1a24",
+                      border: "1px solid #2e2e3e",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
               <div className="pie-legend">
                 {categoryData.map((d, i) => (
                   <div key={i} className="pie-legend-item">
-                    <span className="dot" style={{ background: PIE_COLORS[i] }} />
+                    <span
+                      className="dot"
+                      style={{ background: PIE_COLORS[i] }}
+                    />
                     <span className="pie-name">{d.name}</span>
                     <span className="pie-pct">{d.value}%</span>
                   </div>
@@ -146,57 +341,178 @@ export default function ChartsPanel() {
             </div>
           </div>
 
-          {/* AI Suggestions */}
-          <div className="ai-suggestion-card">
-            <div className="ai-suggestion-header">
-              <div className="ai-suggestion-title-row">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <span className="ai-suggestion-title">AI Suggestion</span>
+          <section className="ai-insights-section" aria-label="AI insights">
+            <div className="ai-insights-title-row">
+              <h3 className="ai-insights-title">AI Insights</h3>
+              <span className="ai-insights-count">2 cards</span>
+            </div>
+
+            <div className="finance-ai-card">
+              <div className="finance-ai-header">
+                <h3 className="finance-ai-title">
+                  DrawdownWatch Agent — CF ceiling risk timeline
+                </h3>
+                <span className="finance-ai-badge">F1 Alert</span>
               </div>
-              <span className="ai-badge">AI</span>
+              <p className="finance-highlight">
+                74% drawn · ceiling in Month 9 at current pace
+              </p>
+              <p className="finance-insight-copy">
+                At current burn rate ₹48 Cr/month and collections at 82.4%, net
+                CF drawdown grows ₹8.6 Cr/month. ₹169 Cr headroom remaining.
+                Headroom exhausted in 19.6 months at best case — but if
+                Bellefonte delay extends and collections drop to 76%, headroom
+                exhausted in 9 months. Supremo and Miralis must pause.
+              </p>
+              <button
+                className="runway-btn"
+                onClick={() => openChart("runway")}
+              >
+                Runway analysis
+              </button>
             </div>
-            <p className="ai-suggestion-desc">Based on your sources, here are next steps:</p>
-            <div className="ai-suggestion-list">
-              {SUGGESTIONS.map((s, i) => (
-                <div key={i} className="ai-suggestion-item">
-                  <div className="ai-suggestion-top">
-                    <span className="ai-suggestion-icon">{s.icon}</span>
-                    <span className="ai-priority-dot" style={{ background: PRIORITY_COLOR[s.priority] }} title={s.priority} />
-                  </div>
-                  <p className="ai-summary">{s.summary}</p>
-                  <div className="ai-action">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
-                      <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    {s.action}
-                  </div>
-                </div>
-              ))}
+
+            <div className="finance-ai-card conversion-ai-card">
+              <div className="finance-ai-header">
+                <h3 className="finance-ai-title">
+                  ConversionPulse Agent — funnel leakage analysis
+                </h3>
+                <span className="finance-ai-badge">AI Insight</span>
+              </div>
+              <p className="finance-highlight">
+                Major conversion leakage detected between Site visits and
+                Negotiation
+              </p>
+              <p className="finance-insight-copy">
+                Monthly funnel analysis indicates strong top-of-funnel
+                acquisition with 84% lead qualification efficiency. However,
+                conversion sharply declines after site visits, dropping from 62%
+                to 34% during negotiation stages. Agreement closure stabilizes
+                at 22%, while final booking conversion reaches only 19.2%.
+              </p>
+              <p className="finance-insight-copy">
+                Primary friction indicators suggest delayed follow-ups, pricing
+                resistance, and extended approval cycles during negotiation. If
+                current leakage persists, projected revenue realization may
+                reduce by 28% over the next quarter.
+              </p>
+              <button
+                className="runway-btn"
+                onClick={() => openChart("conversion")}
+              >
+                Run analysis
+              </button>
             </div>
-          </div>
+          </section>
 
           {/* Line Chart */}
-          <div className="chart-card clickable" onClick={() => openChart('line')}>
+          <div
+            className="chart-card clickable"
+            onClick={() => openChart("line")}
+          >
             <div className="chart-title-row">
               <span className="chart-title">Weekly Users &amp; Sessions</span>
-              <span className="expand-hint"><ExpandIcon /></span>
+              <span className="expand-hint">
+                <ExpandIcon />
+              </span>
             </div>
             <ResponsiveContainer width="100%" height={160}>
-              <LineChart data={trendsData} margin={{ top: 8, right: 8, bottom: 0, left: -20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e1e2a" vertical={false} />
-                <XAxis dataKey="week" tick={{ fill: '#55556a', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#55556a', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ background: '#1a1a24', border: '1px solid #2e2e3e', borderRadius: 8, fontSize: 12 }} />
-                <Line type="monotone" dataKey="users" stroke="#8b5cf6" strokeWidth={2} dot={{ fill: '#8b5cf6', r: 3 }} name="Users" />
-                <Line type="monotone" dataKey="sessions" stroke="#06b6d4" strokeWidth={2} dot={{ fill: '#06b6d4', r: 3 }} name="Sessions" />
+              <LineChart
+                data={trendsData}
+                margin={{ top: 8, right: 8, bottom: 0, left: -20 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="#1e1e2a"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="week"
+                  tick={{ fill: "#55556a", fontSize: 11 }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{ fill: "#55556a", fontSize: 11 }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  contentStyle={{
+                    background: "#1a1a24",
+                    border: "1px solid #2e2e3e",
+                    borderRadius: 8,
+                    fontSize: 12,
+                  }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="users"
+                  stroke="#8b5cf6"
+                  strokeWidth={2}
+                  dot={{ fill: "#8b5cf6", r: 3 }}
+                  name="Users"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="sessions"
+                  stroke="#06b6d4"
+                  strokeWidth={2}
+                  dot={{ fill: "#06b6d4", r: 3 }}
+                  name="Sessions"
+                />
               </LineChart>
             </ResponsiveContainer>
             <div className="chart-legend">
-              <span><span className="dot" style={{ background: '#8b5cf6' }} />Users</span>
-              <span><span className="dot" style={{ background: '#06b6d4' }} />Sessions</span>
+              <span>
+                <span className="dot" style={{ background: "#8b5cf6" }} />
+                Users
+              </span>
+              <span>
+                <span className="dot" style={{ background: "#06b6d4" }} />
+                Sessions
+              </span>
             </div>
+          </div>
+
+          <div
+            className="chart-card clickable"
+            onClick={() => openChart("cashflow")}
+          >
+            <div className="chart-title-row">
+              <span className="chart-title">Cash Flow</span>
+              <span className="expand-hint">
+                <ExpandIcon />
+              </span>
+            </div>
+            <ResponsiveContainer width="100%" height={190}>
+              <Sankey
+                className="cashflow-sankey"
+                data={CASH_FLOW_SANKEY_DATA}
+                nodePadding={18}
+                nodeWidth={8}
+                link={{ stroke: "#7c66f1", strokeOpacity: 0.35 }}
+                node={{
+                  stroke: "#5a46a8",
+                  strokeWidth: 1,
+                  fill: "#8b5cf6",
+                  fillOpacity: 0.9,
+                }}
+              >
+                <Tooltip
+                  formatter={(value) => [`₹${value} Cr`, "Flow"]}
+                  contentStyle={{
+                    background: "#1a1a24",
+                    border: "1px solid #2e2e3e",
+                    borderRadius: 8,
+                    fontSize: 12,
+                    color: "#ffffff",
+                  }}
+                  itemStyle={{ color: "#ffffff" }}
+                  labelStyle={{ color: "#ffffff" }}
+                />
+              </Sankey>
+            </ResponsiveContainer>
           </div>
         </div>
       </aside>
@@ -205,5 +521,5 @@ export default function ChartsPanel() {
         <ChartModal chart={activeChart} onClose={() => setActiveChart(null)} />
       )}
     </>
-  )
+  );
 }

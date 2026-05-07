@@ -11,8 +11,12 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-dialog {
@@ -24,13 +28,21 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px #3a2a6a44;
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.7),
+    0 0 0 1px #3a2a6a44;
   animation: slideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Header */
@@ -148,12 +160,24 @@
   background: #5555aa;
   animation: pulse 1.2s ease-in-out infinite;
 }
-.modal-thinking span:nth-child(2) { animation-delay: 0.2s; }
-.modal-thinking span:nth-child(3) { animation-delay: 0.4s; }
+.modal-thinking span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.modal-thinking span:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 @keyframes pulse {
-  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
-  40% { opacity: 1; transform: scale(1); }
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Pie drill-down layout */
@@ -193,12 +217,20 @@
   padding: 5px 8px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.12s, opacity 0.2s;
+  transition:
+    background 0.12s,
+    opacity 0.2s;
   font-size: 13px;
 }
-.pie-modal-legend-item:hover { background: #1e1e2e; }
-.pie-modal-legend-item.active { background: #1e1a30; }
-.pie-modal-legend-item.dimmed { opacity: 0.35; }
+.pie-modal-legend-item:hover {
+  background: #1e1e2e;
+}
+.pie-modal-legend-item.active {
+  background: #1e1a30;
+}
+.pie-modal-legend-item.dimmed {
+  opacity: 0.35;
+}
 
 .pie-modal-dot {
   width: 10px;
@@ -234,8 +266,9 @@
   opacity: 0;
   transform: translateX(32px);
   pointer-events: none;
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   border-left: 1px solid #1e1e2a;
   min-width: 0;
 }
@@ -282,7 +315,11 @@
   transition: all 0.12s;
   flex-shrink: 0;
 }
-.drill-close:hover { background: #1e1e2e; color: #e8e8ed; border-color: #44445a; }
+.drill-close:hover {
+  background: #1e1e2e;
+  color: #e8e8ed;
+  border-color: #44445a;
+}
 
 .drill-hint {
   font-size: 11px;
@@ -290,6 +327,132 @@
   text-align: center;
   margin-top: 4px;
   flex-shrink: 0;
+}
+
+/* Runway modal layout */
+.runway-modal-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.runway-modal-chart {
+  background: #141420;
+  border: 1px solid #26263a;
+  border-radius: 12px;
+  padding: 12px 12px 10px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.45s ease;
+}
+
+.runway-modal-chart.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.runway-modal-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.runway-modal-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #b9b9d6;
+}
+
+.runway-modal-chip {
+  font-size: 10px;
+  color: #9c9cc1;
+  background: #202038;
+  border: 1px solid #343452;
+  border-radius: 999px;
+  padding: 3px 7px;
+  white-space: nowrap;
+}
+
+.runway-modal-legend {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #9c9cc1;
+}
+
+.runway-modal-legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.funnel-stage-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.conversion-funnel-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 1.2fr) minmax(230px, 0.9fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.conversion-funnel-wrap {
+  border: 1px solid #2b2b42;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #17172a 0%, #121223 100%);
+  padding: 8px;
+}
+
+.funnel-stage-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #2b2b42;
+  border-radius: 8px;
+  background: #19192b;
+  padding: 7px 10px;
+}
+
+.funnel-stage-name {
+  font-size: 12px;
+  color: #b6b6d2;
+}
+
+.funnel-stage-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: #d8d8f1;
+}
+
+.funnel-stage-drop {
+  font-size: 11px;
+  color: #9da0c8;
+  border: 1px solid #343452;
+  background: #202038;
+  border-radius: 999px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .conversion-funnel-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Input */
@@ -307,7 +470,9 @@
   border: 1px solid #2a2a3a;
   border-radius: 10px;
   padding: 8px 8px 8px 12px;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .modal-input-wrapper:focus-within {
@@ -331,7 +496,9 @@
   color: #e8e8ed;
 }
 
-.modal-input::placeholder { color: #44445a; }
+.modal-input::placeholder {
+  color: #44445a;
+}
 
 .modal-send {
   width: 32px;
@@ -347,8 +514,13 @@
   transition: all 0.15s;
   flex-shrink: 0;
 }
-.modal-send.active { background: #8b5cf6; color: #fff; }
-.modal-send.active:hover { background: #7c3aed; }
+.modal-send.active {
+  background: #8b5cf6;
+  color: #fff;
+}
+.modal-send.active:hover {
+  background: #7c3aed;
+}
 
 .modal-tooltip {
   background: #1a1a24;
@@ -369,4 +541,12 @@
   color: #33334a;
   margin-top: 6px;
   text-align: center;
+}
+
+.cashflow-sankey .recharts-text,
+.cashflow-sankey .recharts-label,
+.cashflow-sankey .recharts-sankey-node text,
+.cashflow-sankey .recharts-sankey-link text,
+.modal-chart-area .cashflow-sankey .recharts-text {
+  fill: #ffffff !important;
 }
