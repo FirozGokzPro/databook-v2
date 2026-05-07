@@ -396,6 +396,65 @@
   gap: 6px;
 }
 
+.funnel-stage-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.conversion-funnel-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 1.2fr) minmax(230px, 0.9fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.conversion-funnel-wrap {
+  border: 1px solid #2b2b42;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #17172a 0%, #121223 100%);
+  padding: 8px;
+}
+
+.funnel-stage-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #2b2b42;
+  border-radius: 8px;
+  background: #19192b;
+  padding: 7px 10px;
+}
+
+.funnel-stage-name {
+  font-size: 12px;
+  color: #b6b6d2;
+}
+
+.funnel-stage-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: #d8d8f1;
+}
+
+.funnel-stage-drop {
+  font-size: 11px;
+  color: #9da0c8;
+  border: 1px solid #343452;
+  background: #202038;
+  border-radius: 999px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .conversion-funnel-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Input */
 .modal-input-area {
   padding: 12px 20px 14px;

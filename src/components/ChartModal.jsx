@@ -3,6 +3,8 @@ import {
   BarChart,
   Bar,
   ComposedChart,
+  FunnelChart,
+  Funnel,
   LineChart,
   Line,
   PieChart,
@@ -15,10 +17,19 @@ import {
   ResponsiveContainer,
   Legend,
   ReferenceLine,
+  LabelList,
 } from "recharts";
 import "./ChartModal.css";
 
 const PIE_COLORS = ["#8b5cf6", "#6366f1", "#3b82f6", "#06b6d4"];
+const FUNNEL_COLORS = [
+  "#8b5cf6",
+  "#7c66f1",
+  "#6f70ee",
+  "#5a7be8",
+  "#4688dd",
+  "#2f97d1",
+];
 
 const DRILLDOWN = {
   "Category A": [
@@ -95,7 +106,8 @@ export default function ChartModal({ chart, onClose }) {
   }, [messages, loading]);
 
   useEffect(() => {
-    if (chart.id !== "runway") {
+    const isStagedModal = chart.id === "runway" || chart.id === "conversion";
+    if (!isStagedModal) {
       setRunwayStage(0);
       return undefined;
     }
@@ -536,6 +548,88 @@ export default function ChartModal({ chart, onClose }) {
                 <span className="dot" style={{ background: "#8b5cf6" }} />
                 FCF by project
               </span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (chart.id === "conversion") {
+      const conversionData = chart.data.map((item) => ({
+        ...item,
+        value: Math.min(100, Math.max(0, Number(item.value))),
+      }));
+
+      return (
+        <div className="runway-modal-layout">
+          <div
+            className={`runway-modal-chart ${runwayStage >= 1 ? "visible" : ""}`}
+          >
+            <div className="runway-modal-title-row">
+              <span className="runway-modal-title">
+                Lead conversion funnel — monthly
+              </span>
+              <span className="runway-modal-chip">Vertical funnel</span>
+            </div>
+            <div className="conversion-funnel-layout">
+              <div className="conversion-funnel-wrap">
+                <ResponsiveContainer width="100%" height={340}>
+                  <FunnelChart>
+                    <Tooltip
+                      formatter={(value) => [`${value}%`, "Conversion"]}
+                      contentStyle={{
+                        background: "#1a1a24",
+                        border: "1px solid #2e2e3e",
+                        borderRadius: 8,
+                        fontSize: 13,
+                      }}
+                    />
+                    <Funnel
+                      data={conversionData}
+                      dataKey="value"
+                      nameKey="stage"
+                      isAnimationActive
+                      animationDuration={700}
+                      stroke="#0f1020"
+                      strokeWidth={1}
+                      lastShapeType="rectangle"
+                    >
+                      {conversionData.map((entry, index) => (
+                        <Cell
+                          key={entry.stage}
+                          fill={FUNNEL_COLORS[index % FUNNEL_COLORS.length]}
+                        />
+                      ))}
+                      <LabelList
+                        dataKey="value"
+                        position="inside"
+                        fill="#f3f3ff"
+                        stroke="none"
+                        formatter={(value) => `${value}%`}
+                      />
+                    </Funnel>
+                  </FunnelChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="funnel-stage-list">
+                {conversionData.map((item, index) => {
+                  const prev =
+                    index === 0 ? item.value : conversionData[index - 1].value;
+                  const drop =
+                    index === 0 ? 0 : +(prev - item.value).toFixed(1);
+
+                  return (
+                    <div key={item.stage} className="funnel-stage-item">
+                      <span className="funnel-stage-name">{item.stage}</span>
+                      <span className="funnel-stage-value">{item.value}%</span>
+                      <span className="funnel-stage-drop">
+                        {index === 0 ? "base" : `-${drop} pts`}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

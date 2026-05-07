@@ -189,6 +189,35 @@
 }
 
 /* AI Insights card */
+.ai-insights-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ai-insights-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ai-insights-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #b9b9d6;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.ai-insights-count {
+  font-size: 10px;
+  color: #8888aa;
+  border: 1px solid #303048;
+  background: #171724;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
 .finance-ai-card {
   background: linear-gradient(145deg, #16102a, #131220);
   border: 1px solid #3d2d6a;

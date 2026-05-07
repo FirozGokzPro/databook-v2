@@ -86,6 +86,15 @@ const FCF_BY_PROJECT_DATA = [
   { project: "Riviera", fcf: 80 },
 ];
 
+const LEAD_CONVERSION_FUNNEL_DATA = [
+  { stage: "Total enquiries", value: 100 },
+  { stage: "Qualified leads", value: 84 },
+  { stage: "Site visits", value: 62 },
+  { stage: "Negotiation", value: 34 },
+  { stage: "Agreement signed", value: 22 },
+  { stage: "Booking + payment", value: 19.2 },
+];
+
 const CHARTS = [
   { id: "bar", title: "Revenue vs Target ($K)", data: revenueData },
   { id: "pie", title: "Sales by Category", data: categoryData },
@@ -97,6 +106,11 @@ const CHARTS = [
       collectionsVsDemand: COLLECTIONS_VS_DEMAND_DATA,
       fcfByProject: FCF_BY_PROJECT_DATA,
     },
+  },
+  {
+    id: "conversion",
+    title: "Lead conversion funnel - monthly",
+    data: LEAD_CONVERSION_FUNNEL_DATA,
   },
 ];
 
@@ -283,28 +297,69 @@ export default function ChartsPanel() {
             </div>
           </div>
 
-          {/* AI Insights */}
-          <div className="finance-ai-card">
-            <div className="finance-ai-header">
-              <h3 className="finance-ai-title">
-                DrawdownWatch Agent — CF ceiling risk timeline
-              </h3>
-              <span className="finance-ai-badge">F1 Alert</span>
+          <section className="ai-insights-section" aria-label="AI insights">
+            <div className="ai-insights-title-row">
+              <h3 className="ai-insights-title">AI Insights</h3>
+              <span className="ai-insights-count">2 cards</span>
             </div>
-            <p className="finance-highlight">
-              74% drawn · ceiling in Month 9 at current pace
-            </p>
-            <p className="finance-insight-copy">
-              At current burn rate ₹48 Cr/month and collections at 82.4%, net CF
-              drawdown grows ₹8.6 Cr/month. ₹169 Cr headroom remaining. Headroom
-              exhausted in 19.6 months at best case — but if Bellefonte delay
-              extends and collections drop to 76%, headroom exhausted in 9
-              months. Supremo and Miralis must pause.
-            </p>
-            <button className="runway-btn" onClick={() => openChart("runway")}>
-              Runway analysis
-            </button>
-          </div>
+
+            <div className="finance-ai-card">
+              <div className="finance-ai-header">
+                <h3 className="finance-ai-title">
+                  DrawdownWatch Agent — CF ceiling risk timeline
+                </h3>
+                <span className="finance-ai-badge">F1 Alert</span>
+              </div>
+              <p className="finance-highlight">
+                74% drawn · ceiling in Month 9 at current pace
+              </p>
+              <p className="finance-insight-copy">
+                At current burn rate ₹48 Cr/month and collections at 82.4%, net
+                CF drawdown grows ₹8.6 Cr/month. ₹169 Cr headroom remaining.
+                Headroom exhausted in 19.6 months at best case — but if
+                Bellefonte delay extends and collections drop to 76%, headroom
+                exhausted in 9 months. Supremo and Miralis must pause.
+              </p>
+              <button
+                className="runway-btn"
+                onClick={() => openChart("runway")}
+              >
+                Runway analysis
+              </button>
+            </div>
+
+            <div className="finance-ai-card conversion-ai-card">
+              <div className="finance-ai-header">
+                <h3 className="finance-ai-title">
+                  ConversionPulse Agent — funnel leakage analysis
+                </h3>
+                <span className="finance-ai-badge">AI Insight</span>
+              </div>
+              <p className="finance-highlight">
+                Major conversion leakage detected between Site visits and
+                Negotiation
+              </p>
+              <p className="finance-insight-copy">
+                Monthly funnel analysis indicates strong top-of-funnel
+                acquisition with 84% lead qualification efficiency. However,
+                conversion sharply declines after site visits, dropping from 62%
+                to 34% during negotiation stages. Agreement closure stabilizes
+                at 22%, while final booking conversion reaches only 19.2%.
+              </p>
+              <p className="finance-insight-copy">
+                Primary friction indicators suggest delayed follow-ups, pricing
+                resistance, and extended approval cycles during negotiation. If
+                current leakage persists, projected revenue realization may
+                reduce by 28% over the next quarter.
+              </p>
+              <button
+                className="runway-btn"
+                onClick={() => openChart("conversion")}
+              >
+                Run analysis
+              </button>
+            </div>
+          </section>
 
           {/* Line Chart */}
           <div
