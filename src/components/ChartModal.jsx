@@ -84,6 +84,53 @@ const AI_REPLIES = [
   "Updated. Bar radius increased for a softer look.",
 ];
 
+const SankeyNodeWithLabel = ({ x, y, width, height, payload }) => {
+  const shortName = payload?.name?.split("·")?.[0]?.trim() ?? "";
+  const value = Number(payload?.value);
+  let formattedValue = "";
+  if (Number.isFinite(value)) {
+    const roundedValue = value % 1 === 0 ? value.toFixed(0) : value.toFixed(1);
+    formattedValue = `₹${roundedValue} Cr`;
+  }
+
+  return (
+    <g>
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        rx={4}
+        fill="#8b5cf6"
+        fillOpacity={0.95}
+        stroke="#5a46a8"
+        strokeWidth={1}
+      />
+      <text
+        x={x + 5}
+        y={y + 12}
+        fill="#ffffff"
+        fontSize="10"
+        fontWeight="600"
+        textAnchor="start"
+      >
+        {shortName}
+      </text>
+      {height >= 24 && (
+        <text
+          x={x + 5}
+          y={y + 24}
+          fill="#e9e6ff"
+          fontSize="9"
+          textAnchor="start"
+        >
+          {formattedValue}
+        </text>
+      )}
+    </g>
+  );
+};
+
 export default function ChartModal({ chart, onClose }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
@@ -649,16 +696,11 @@ export default function ChartModal({ chart, onClose }) {
               <Sankey
                 className="cashflow-sankey"
                 data={chart.data}
-                nodePadding={28}
-                nodeWidth={12}
+                nodePadding={24}
+                nodeWidth={92}
                 margin={{ top: 8, right: 12, bottom: 8, left: 12 }}
-                link={{ stroke: "#7c66f1", strokeOpacity: 0.35 }}
-                node={{
-                  stroke: "#5a46a8",
-                  strokeWidth: 1,
-                  fill: "#8b5cf6",
-                  fillOpacity: 0.95,
-                }}
+                link={{ stroke: "#7c66f1", strokeOpacity: 0.3 }}
+                node={<SankeyNodeWithLabel />}
               >
                 <Tooltip
                   formatter={(value) => [`₹${value} Cr`, "Flow"]}

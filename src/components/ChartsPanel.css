@@ -164,6 +164,30 @@
   fill: #ffffff !important;
 }
 
+.cashflow-inline-list {
+  margin-top: 8px;
+  display: grid;
+  gap: 4px;
+}
+
+.cashflow-inline-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  color: #c9c9e0;
+  border: 1px solid #2a2a3a;
+  border-radius: 7px;
+  background: #181826;
+  padding: 5px 8px;
+}
+
+.cashflow-inline-row strong {
+  color: #ffffff;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 /* Pie layout */
 .pie-wrapper {
   display: flex;
