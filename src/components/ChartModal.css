@@ -542,3 +542,11 @@
   margin-top: 6px;
   text-align: center;
 }
+
+.cashflow-sankey .recharts-text,
+.cashflow-sankey .recharts-label,
+.cashflow-sankey .recharts-sankey-node text,
+.cashflow-sankey .recharts-sankey-link text,
+.modal-chart-area .cashflow-sankey .recharts-text {
+  fill: #ffffff !important;
+}

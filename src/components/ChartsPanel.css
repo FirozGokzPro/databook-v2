@@ -157,6 +157,13 @@
   flex-shrink: 0;
 }
 
+.cashflow-sankey .recharts-text,
+.cashflow-sankey .recharts-label,
+.cashflow-sankey .recharts-sankey-node text,
+.cashflow-sankey .recharts-sankey-link text {
+  fill: #ffffff !important;
+}
+
 /* Pie layout */
 .pie-wrapper {
   display: flex;

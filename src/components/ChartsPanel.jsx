@@ -4,6 +4,7 @@ import {
   Bar,
   LineChart,
   Line,
+  Sankey,
   PieChart,
   Pie,
   Cell,
@@ -95,6 +96,44 @@ const LEAD_CONVERSION_FUNNEL_DATA = [
   { stage: "Booking + payment", value: 19.2 },
 ];
 
+const CASH_FLOW_SANKEY_DATA = {
+  nodes: [
+    { name: "Verdant PH 2 · ECR" },
+    { name: "Ananda · OMR Chennai" },
+    { name: "Enchante · Coimbatore" },
+    { name: "Periwinkle · Hyderabad" },
+    { name: "Supremo · Sarjapur" },
+    { name: "Bellefonte · Perungudi" },
+    { name: "Mirabilis · Whitefield" },
+    { name: "Revenue" },
+    { name: "EBITDA" },
+    { name: "Construction Cost" },
+    { name: "SG&A Expense" },
+    { name: "Interest Cost" },
+    { name: "Profit Before Tax (PBT)" },
+    { name: "Depreciation & Amortization" },
+    { name: "Profit After Tax (PAT)" },
+    { name: "Tax" },
+  ],
+  links: [
+    { source: 0, target: 7, value: 17 },
+    { source: 1, target: 7, value: 11 },
+    { source: 2, target: 7, value: 10 },
+    { source: 3, target: 7, value: 5.8 },
+    { source: 4, target: 7, value: 5.25 },
+    { source: 5, target: 7, value: 4.4 },
+    { source: 6, target: 7, value: 3.8 },
+    { source: 7, target: 8, value: 23.8 },
+    { source: 7, target: 9, value: 21.5 },
+    { source: 7, target: 10, value: 8.2 },
+    { source: 7, target: 11, value: 3.6 },
+    { source: 8, target: 12, value: 18.5 },
+    { source: 8, target: 13, value: 1.2 },
+    { source: 12, target: 14, value: 7.9 },
+    { source: 12, target: 15, value: 4.6 },
+  ],
+};
+
 const CHARTS = [
   { id: "bar", title: "Revenue vs Target ($K)", data: revenueData },
   { id: "pie", title: "Sales by Category", data: categoryData },
@@ -111,6 +150,11 @@ const CHARTS = [
     id: "conversion",
     title: "Lead conversion funnel - monthly",
     data: LEAD_CONVERSION_FUNNEL_DATA,
+  },
+  {
+    id: "cashflow",
+    title: "Cash Flow",
+    data: CASH_FLOW_SANKEY_DATA,
   },
 ];
 
@@ -429,6 +473,46 @@ export default function ChartsPanel() {
                 Sessions
               </span>
             </div>
+          </div>
+
+          <div
+            className="chart-card clickable"
+            onClick={() => openChart("cashflow")}
+          >
+            <div className="chart-title-row">
+              <span className="chart-title">Cash Flow</span>
+              <span className="expand-hint">
+                <ExpandIcon />
+              </span>
+            </div>
+            <ResponsiveContainer width="100%" height={190}>
+              <Sankey
+                className="cashflow-sankey"
+                data={CASH_FLOW_SANKEY_DATA}
+                nodePadding={18}
+                nodeWidth={8}
+                link={{ stroke: "#7c66f1", strokeOpacity: 0.35 }}
+                node={{
+                  stroke: "#5a46a8",
+                  strokeWidth: 1,
+                  fill: "#8b5cf6",
+                  fillOpacity: 0.9,
+                }}
+              >
+                <Tooltip
+                  formatter={(value) => [`₹${value} Cr`, "Flow"]}
+                  contentStyle={{
+                    background: "#1a1a24",
+                    border: "1px solid #2e2e3e",
+                    borderRadius: 8,
+                    fontSize: 12,
+                    color: "#ffffff",
+                  }}
+                  itemStyle={{ color: "#ffffff" }}
+                  labelStyle={{ color: "#ffffff" }}
+                />
+              </Sankey>
+            </ResponsiveContainer>
           </div>
         </div>
       </aside>

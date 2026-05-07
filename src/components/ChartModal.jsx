@@ -5,6 +5,7 @@ import {
   ComposedChart,
   FunnelChart,
   Funnel,
+  Sankey,
   LineChart,
   Line,
   PieChart,
@@ -631,6 +632,48 @@ export default function ChartModal({ chart, onClose }) {
                 })}
               </div>
             </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (chart.id === "cashflow") {
+      return (
+        <div className="runway-modal-layout">
+          <div className="runway-modal-chart visible">
+            <div className="runway-modal-title-row">
+              <span className="runway-modal-title">Cash Flow</span>
+              <span className="runway-modal-chip">Interactive Sankey</span>
+            </div>
+            <ResponsiveContainer width="100%" height={460}>
+              <Sankey
+                className="cashflow-sankey"
+                data={chart.data}
+                nodePadding={28}
+                nodeWidth={12}
+                margin={{ top: 8, right: 12, bottom: 8, left: 12 }}
+                link={{ stroke: "#7c66f1", strokeOpacity: 0.35 }}
+                node={{
+                  stroke: "#5a46a8",
+                  strokeWidth: 1,
+                  fill: "#8b5cf6",
+                  fillOpacity: 0.95,
+                }}
+              >
+                <Tooltip
+                  formatter={(value) => [`₹${value} Cr`, "Flow"]}
+                  contentStyle={{
+                    background: "#1a1a24",
+                    border: "1px solid #2e2e3e",
+                    borderRadius: 8,
+                    fontSize: 13,
+                    color: "#ffffff",
+                  }}
+                  itemStyle={{ color: "#ffffff" }}
+                  labelStyle={{ color: "#ffffff" }}
+                />
+              </Sankey>
+            </ResponsiveContainer>
           </div>
         </div>
       );
