@@ -26,43 +26,55 @@
 }
 
 /* KPI */
-.kpi-row {
+.insights-kpi-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 8px;
 }
 
-.kpi-card {
-  background: #141420;
-  border: 1px solid #1e1e2a;
-  border-radius: 10px;
-  padding: 12px 12px 10px;
+.insights-kpi-card {
+  background: #fff;
+  border: 1px solid #f0d372;
+  border-radius: 11px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  box-shadow: 0 7px 15px rgba(164, 120, 0, 0.07);
+  min-height: 110px;
 }
 
-.kpi-label {
-  font-size: 11px;
-  color: #55556a;
+.insights-kpi-title {
+  font-size: 10.5px;
+  color: #7f6200;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 600;
 }
 
-.kpi-value {
-  font-size: 20px;
+.insights-kpi-value {
+  margin-top: 7px;
+  font-size: 22px;
   font-weight: 700;
-  color: #e8e8ed;
+  color: #211800;
   letter-spacing: -0.02em;
 }
 
-.kpi-delta {
+.insights-kpi-subtitle {
+  margin-top: 8px;
   font-size: 11px;
+  color: #8f6f00;
   font-weight: 500;
 }
-.kpi-delta.positive { color: #22c55e; }
-.kpi-delta.negative { color: #ef4444; }
+
+.insights-kpi-subtitle.spacer {
+  opacity: 0;
+}
+
+@media (min-width: 700px) {
+  .insights-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
 /* Chart cards */
 .chart-card {
@@ -74,7 +86,9 @@
 
 .chart-card.clickable {
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 .chart-card.clickable:hover {
   border-color: #3d2d6a;
@@ -129,7 +143,11 @@
   font-size: 11px;
   color: #7777aa;
 }
-.chart-legend span { display: flex; align-items: center; gap: 5px; }
+.chart-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 
 .dot {
   width: 8px;
@@ -182,9 +200,11 @@
 }
 
 .ai-suggestion-card::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: -2px; left: -1px; right: -1px;
+  top: -2px;
+  left: -1px;
+  right: -1px;
   height: 3px;
   border-radius: 12px 12px 0 0;
   background: linear-gradient(90deg, #8b5cf6, #6366f1, #06b6d4);
