@@ -45,12 +45,6 @@ const trendsData = [
 
 const PIE_COLORS = ["#8b5cf6", "#6366f1", "#3b82f6", "#06b6d4"];
 
-const CHARTS = [
-  { id: "bar", title: "Revenue vs Target ($K)", data: revenueData },
-  { id: "pie", title: "Sales by Category", data: categoryData },
-  { id: "line", title: "Weekly Users & Sessions", data: trendsData },
-];
-
 const KPI_CARDS = [
   { title: "Free cash flow YTD", value: "₹118 Cr" },
   { title: "Cash burn rate", value: "₹48 Cr" },
@@ -63,31 +57,32 @@ const KPI_CARDS = [
   { title: "Interest rate (wtd)", value: "11.8%", subtitle: "Trial balance" },
 ];
 
-const SUGGESTIONS = [
-  {
-    icon: "📈",
-    summary:
-      "Revenue beat target 6 of 8 months. Q3 peak at $2.4M — highest in dataset.",
-    action: "Investigate Q3 drivers and replicate conditions in Q4 planning.",
-    priority: "high",
-  },
-  {
-    icon: "🏆",
-    summary: "Category A holds 43% share — 1.6× next largest category.",
-    action: "Expand Category A inventory before next cycle to capture demand.",
-    priority: "medium",
-  },
-  {
-    icon: "👥",
-    summary:
-      "Sessions growing 2.2× faster than users (W1→W6). Engagement rising.",
-    action:
-      "Identify top-session flows and convert them into onboarding steps.",
-    priority: "medium",
-  },
+const RUNWAY_TIMELINE_DATA = [
+  { scenario: "Best case", months: 19.6 },
+  { scenario: "Current pace", months: 12.8 },
+  { scenario: "Delay + 76% collections", months: 9 },
 ];
 
-const PRIORITY_COLOR = { high: "#f59e0b", medium: "#8b5cf6", low: "#22c55e" };
+const HEADROOM_TRAJECTORY_DATA = [
+  { month: "M0", base: 169, stress: 169 },
+  { month: "M3", base: 143, stress: 108 },
+  { month: "M6", base: 117, stress: 52 },
+  { month: "M9", base: 92, stress: 0 },
+];
+
+const CHARTS = [
+  { id: "bar", title: "Revenue vs Target ($K)", data: revenueData },
+  { id: "pie", title: "Sales by Category", data: categoryData },
+  { id: "line", title: "Weekly Users & Sessions", data: trendsData },
+  {
+    id: "runway",
+    title: "Runway analysis",
+    data: {
+      timeline: RUNWAY_TIMELINE_DATA,
+      headroom: HEADROOM_TRAJECTORY_DATA,
+    },
+  },
+];
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
@@ -272,53 +267,27 @@ export default function ChartsPanel() {
             </div>
           </div>
 
-          {/* AI Suggestions */}
-          <div className="ai-suggestion-card">
-            <div className="ai-suggestion-header">
-              <div className="ai-suggestion-title-row">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                    stroke="#a78bfa"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span className="ai-suggestion-title">AI Suggestion</span>
-              </div>
-              <span className="ai-badge">AI</span>
+          {/* AI Insights */}
+          <div className="finance-ai-card">
+            <div className="finance-ai-header">
+              <h3 className="finance-ai-title">
+                DrawdownWatch Agent — CF ceiling risk timeline
+              </h3>
+              <span className="finance-ai-badge">F1 Alert</span>
             </div>
-            <p className="ai-suggestion-desc">
-              Based on your sources, here are next steps:
+            <p className="finance-highlight">
+              74% drawn · ceiling in Month 9 at current pace
             </p>
-            <div className="ai-suggestion-list">
-              {SUGGESTIONS.map((s, i) => (
-                <div key={i} className="ai-suggestion-item">
-                  <div className="ai-suggestion-top">
-                    <span className="ai-suggestion-icon">{s.icon}</span>
-                    <span
-                      className="ai-priority-dot"
-                      style={{ background: PRIORITY_COLOR[s.priority] }}
-                      title={s.priority}
-                    />
-                  </div>
-                  <p className="ai-summary">{s.summary}</p>
-                  <div className="ai-action">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M5 12h14M12 5l7 7-7 7"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    {s.action}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <p className="finance-insight-copy">
+              At current burn rate ₹48 Cr/month and collections at 82.4%, net CF
+              drawdown grows ₹8.6 Cr/month. ₹169 Cr headroom remaining. Headroom
+              exhausted in 19.6 months at best case — but if Bellefonte delay
+              extends and collections drop to 76%, headroom exhausted in 9
+              months. Supremo and Miralis must pause.
+            </p>
+            <button className="runway-btn" onClick={() => openChart("runway")}>
+              Runway analysis
+            </button>
           </div>
 
           {/* Line Chart */}
