@@ -57,17 +57,33 @@ const KPI_CARDS = [
   { title: "Interest rate (wtd)", value: "11.8%", subtitle: "Trial balance" },
 ];
 
-const RUNWAY_TIMELINE_DATA = [
-  { scenario: "Best case", months: 19.6 },
-  { scenario: "Current pace", months: 12.8 },
-  { scenario: "Delay + 76% collections", months: 9 },
+const COLLECTIONS_VS_DEMAND_DATA = [
+  { month: "Jan", demandNotes: 105, collections: 90 },
+  { month: "Feb", demandNotes: 85, collections: 80 },
+  { month: "Mar", demandNotes: 78, collections: 65 },
+  { month: "Apr", demandNotes: 84, collections: 62 },
+  { month: "May", demandNotes: 90, collections: 70 },
+  { month: "Jun", demandNotes: 86, collections: 76 },
+  { month: "Jul", demandNotes: 95, collections: 68 },
+  { month: "Aug", demandNotes: 101, collections: 79 },
+  { month: "Sep", demandNotes: 98, collections: 83 },
+  { month: "Oct", demandNotes: 100, collections: 78 },
+  { month: "Nov", demandNotes: 110, collections: 92 },
+  { month: "Dec", demandNotes: 106, collections: 85 },
 ];
 
-const HEADROOM_TRAJECTORY_DATA = [
-  { month: "M0", base: 169, stress: 169 },
-  { month: "M3", base: 143, stress: 108 },
-  { month: "M6", base: 117, stress: 52 },
-  { month: "M9", base: 92, stress: 0 },
+const FCF_BY_PROJECT_DATA = [
+  { project: "Amada", fcf: 82 },
+  { project: "Verdant P2", fcf: 31 },
+  { project: "Supremo", fcf: 28 },
+  { project: "Bellefonte", fcf: 90 },
+  { project: "Mirabilis", fcf: 78 },
+  { project: "Enchante", fcf: 60 },
+  { project: "Periwinkle", fcf: 50 },
+  { project: "Aurelia", fcf: 40 },
+  { project: "Celeste", fcf: 100 },
+  { project: "Florence", fcf: 90 },
+  { project: "Riviera", fcf: 80 },
 ];
 
 const CHARTS = [
@@ -78,8 +94,8 @@ const CHARTS = [
     id: "runway",
     title: "Runway analysis",
     data: {
-      timeline: RUNWAY_TIMELINE_DATA,
-      headroom: HEADROOM_TRAJECTORY_DATA,
+      collectionsVsDemand: COLLECTIONS_VS_DEMAND_DATA,
+      fcfByProject: FCF_BY_PROJECT_DATA,
     },
   },
 ];

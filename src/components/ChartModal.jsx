@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   BarChart,
   Bar,
+  ComposedChart,
   LineChart,
   Line,
   PieChart,
@@ -13,6 +14,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
+  ReferenceLine,
 } from "recharts";
 import "./ChartModal.css";
 
@@ -400,66 +402,13 @@ export default function ChartModal({ chart, onClose }) {
           >
             <div className="runway-modal-title-row">
               <span className="runway-modal-title">
-                Ceiling timeline by scenario
+                Collections vs demand notes - monthly (₹ Cr)
               </span>
-              <span className="runway-modal-chip">Months</span>
+              <span className="runway-modal-chip">Bar + Line</span>
             </div>
             <ResponsiveContainer width="100%" height={260}>
-              <BarChart
-                data={chart.data.timeline}
-                margin={{ top: 8, right: 12, left: -8, bottom: 0 }}
-              >
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#1e1e2a"
-                  vertical={false}
-                />
-                <XAxis
-                  dataKey="scenario"
-                  tick={{ fill: "#7777aa", fontSize: 12 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis
-                  tick={{ fill: "#7777aa", fontSize: 12 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip
-                  formatter={(value) => [`${value} months`, "Timeline"]}
-                  contentStyle={{
-                    background: "#1a1a24",
-                    border: "1px solid #2e2e3e",
-                    borderRadius: 8,
-                    fontSize: 13,
-                  }}
-                  cursor={{ fill: "#ffffff06" }}
-                />
-                <Bar
-                  dataKey="months"
-                  fill="#8b5cf6"
-                  radius={[5, 5, 0, 0]}
-                  name="Timeline"
-                  isAnimationActive
-                  animationDuration={600}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div
-            className={`runway-modal-chart ${runwayStage >= 2 ? "visible" : ""}`}
-          >
-            <div className="runway-modal-title-row">
-              <span className="runway-modal-title">
-                Headroom trajectory (₹ Cr)
-              </span>
-              <span className="runway-modal-chip">Base vs Stress</span>
-            </div>
-            <ResponsiveContainer width="100%" height={260}>
-              <BarChart
-                data={chart.data.headroom}
-                barGap={4}
+              <ComposedChart
+                data={chart.data.collectionsVsDemand}
                 margin={{ top: 8, right: 12, left: -8, bottom: 0 }}
               >
                 <CartesianGrid
@@ -479,6 +428,12 @@ export default function ChartModal({ chart, onClose }) {
                   tickLine={false}
                 />
                 <Tooltip
+                  formatter={(value, name) => [
+                    `₹${value} Cr`,
+                    name === "demandNotes"
+                      ? "Demand notes raised"
+                      : "Collections received",
+                  ]}
                   contentStyle={{
                     background: "#1a1a24",
                     border: "1px solid #2e2e3e",
@@ -488,31 +443,98 @@ export default function ChartModal({ chart, onClose }) {
                   cursor={{ fill: "#ffffff06" }}
                 />
                 <Bar
-                  dataKey="base"
+                  dataKey="demandNotes"
                   fill="#8b5cf6"
                   radius={[5, 5, 0, 0]}
-                  name="Base case"
+                  name="demandNotes"
+                  isAnimationActive
+                  animationDuration={600}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="collections"
+                  stroke="#06b6d4"
+                  strokeWidth={2.5}
+                  dot={{ fill: "#06b6d4", r: 3 }}
+                  activeDot={{ r: 5 }}
+                  name="collections"
+                  isAnimationActive
+                  animationDuration={800}
+                />
+                <Legend
+                  wrapperStyle={{
+                    paddingTop: 12,
+                    fontSize: 12,
+                    color: "#9b9bc2",
+                  }}
+                  formatter={(value) =>
+                    value === "demandNotes"
+                      ? "Demand notes raised"
+                      : "Collections received"
+                  }
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div
+            className={`runway-modal-chart ${runwayStage >= 2 ? "visible" : ""}`}
+          >
+            <div className="runway-modal-title-row">
+              <span className="runway-modal-title">FCF by project (₹ Cr)</span>
+              <span className="runway-modal-chip">Vertical bars</span>
+            </div>
+            <ResponsiveContainer width="100%" height={260}>
+              <BarChart
+                data={chart.data.fcfByProject}
+                barGap={4}
+                barSize={80}
+                margin={{ top: 8, right: 12, left: -8, bottom: 0 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="#1e1e2a"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="project"
+                  tick={{ fill: "#7777aa", fontSize: 12 }}
+                  axisLine={false}
+                  tickLine={false}
+                  angle={-20}
+                  textAnchor="end"
+                  height={54}
+                />
+                <YAxis
+                  tick={{ fill: "#7777aa", fontSize: 12 }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  contentStyle={{
+                    background: "#1a1a24",
+                    border: "1px solid #2e2e3e",
+                    borderRadius: 8,
+                    fontSize: 13,
+                  }}
+                  cursor={{ fill: "#ffffff06" }}
+                  formatter={(value) => [`₹${value} Cr`, "FCF"]}
+                />
+                <ReferenceLine y={0} stroke="#44445a" strokeDasharray="4 4" />
+                <Bar
+                  dataKey="fcf"
+                  fill="#8b5cf6"
+                  radius={[5, 5, 0, 0]}
+                  name="FCF"
                   isAnimationActive
                   animationDuration={500}
-                />
-                <Bar
-                  dataKey="stress"
-                  fill="#06b6d4"
-                  radius={[5, 5, 0, 0]}
-                  name="Stress case"
-                  isAnimationActive
-                  animationDuration={700}
                 />
               </BarChart>
             </ResponsiveContainer>
             <div className="runway-modal-legend">
               <span>
                 <span className="dot" style={{ background: "#8b5cf6" }} />
-                Base case
-              </span>
-              <span>
-                <span className="dot" style={{ background: "#06b6d4" }} />
-                Stress case
+                FCF by project
               </span>
             </div>
           </div>
