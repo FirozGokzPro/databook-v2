@@ -489,14 +489,14 @@ export default function ChartsPanel() {
               <Sankey
                 className="cashflow-sankey"
                 data={CASH_FLOW_SANKEY_DATA}
-                nodePadding={18}
-                nodeWidth={8}
-                link={{ stroke: "#7c66f1", strokeOpacity: 0.35 }}
+                nodePadding={16}
+                nodeWidth={12}
+                link={{ stroke: "#7c66f1", strokeOpacity: 0.3 }}
                 node={{
                   stroke: "#5a46a8",
                   strokeWidth: 1,
                   fill: "#8b5cf6",
-                  fillOpacity: 0.9,
+                  fillOpacity: 0.92,
                 }}
               >
                 <Tooltip
